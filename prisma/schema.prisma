@@ -1,0 +1,78 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int        @id @default(autoincrement())
+  username      String     @unique
+  passwordHash  String     @map("password_hash")
+  createdAt     DateTime   @default(now()) @map("created_at")
+  customers     Customer[]
+
+  @@map("users")
+}
+
+model Category {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  customers Customer[]
+
+  @@map("categories")
+}
+
+model Customer {
+  id         Int              @id @default(autoincrement())
+  userId     Int              @map("user_id")
+  company    String
+  categoryId Int              @map("category_id")
+  phone      String?
+  address    String
+  level      String           @default("L1")
+  otherSales String?          @map("other_sales")
+  nextTime   DateTime?        @map("next_time")
+  createdAt  DateTime         @default(now()) @map("created_at")
+  updatedAt  DateTime         @updatedAt @map("updated_at")
+  user       User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category   Category         @relation(fields: [categoryId], references: [id])
+  contacts   Contact[]
+  logs       DevelopmentLog[]
+
+  @@index([userId])
+  @@index([categoryId])
+  @@index([level])
+  @@index([address])
+  @@map("customers")
+}
+
+model Contact {
+  id         Int      @id @default(autoincrement())
+  customerId Int      @map("customer_id")
+  name       String
+  title      String?
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@index([customerId])
+  @@map("contacts")
+}
+
+model DevelopmentLog {
+  id         Int      @id @default(autoincrement())
+  customerId Int      @map("customer_id")
+  logDate    DateTime @map("log_date") @db.Date
+  method     String
+  notes      String   @db.Text
+  createdAt  DateTime @default(now()) @map("created_at")
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@index([customerId])
+  @@index([logDate])
+  @@map("development_logs")
+}

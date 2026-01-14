@@ -330,7 +330,7 @@ export default function AddCustomerModal({
       <FormField label="設定下次聯繫時間">
         <Input
           type="date"
-          value={customerData.nextTime}
+          value={customerData.nextTime ?? ''}
           onChange={(e) => updateCustomer('nextTime', e.target.value)}
           min={new Date().toISOString().split('T')[0]}
         />

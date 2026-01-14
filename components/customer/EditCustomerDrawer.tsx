@@ -185,7 +185,7 @@ export default function EditCustomerDrawer({
       <FormField label="下次聯繫時間">
         <Input
           type="date"
-          value={formData.nextTime}
+          value={formData.nextTime ?? ''}
           onChange={(e) => updateField('nextTime', e.target.value)}
           min={new Date().toISOString().split('T')[0]}
         />

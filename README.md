@@ -272,3 +272,8 @@ MIT License
 ---
 
 **充滿動感的開發筆記本，讓客戶管理也能如此有趣！** 👦✨
+ INSERT INTO "User" (username, "passwordHash", "createdAt", "updatedAt")
+  VALUES ('admin', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqVnrcph5kMP5EWQP5gMkzPh6J0TC', NOW(), NOW());
+
+  INSERT INTO "Category" (name, "createdAt", "updatedAt")
+  VALUES ('製造', NOW(), NOW()), ('醫療', NOW(), NOW()), ('服務', NOW(), NOW()), ('政府', NOW(), NOW()), ('學校', NOW(), NOW()), ('其他', NOW(), NOW());
